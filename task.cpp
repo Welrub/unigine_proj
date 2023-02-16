@@ -9,6 +9,8 @@
 #include <memory>
 #include <immintrin.h>
 
+//#define DEBUG
+
 static inline __m512 mult_and_sum_zfvalues(__m512 a, __m512 b, __m512 c) { // a * b + c
 	return _mm512_fmadd_ps(a, b, c);
 }
@@ -41,6 +43,7 @@ static inline __mmask16 cmpr_less_then_zfvalues(__m512 a, __m512 b) {
 	return _mm512_cmplt_ps_mask(a, b);
 }
 
+#ifdef DEBUG
 class SimpleTimer 
 {
 public:
@@ -55,6 +58,7 @@ public:
 private:
 	std::chrono::time_point<std::chrono::steady_clock> start, end;
 };
+#endif // DEBUG
 
 struct vec2
 {
@@ -164,7 +168,9 @@ void checkVisibleHelper(std::vector<std::vector<std::pair<int, unit>>>& sorted_u
 	
 void checkVisible(const std::vector<unit>& input_units, std::vector<int>& result)
 {
+#ifdef DEBUG
 	SimpleTimer t;
+#endif // DEBUG
 	int n = input_units.size();
 	result.resize(n, 0);
 	std::vector<std::vector<std::pair<int, unit>>> sorted_units;
